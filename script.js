@@ -52,6 +52,9 @@ let autoplayTimer = null;
 for (let i = 0; i < totalSlides; i++) {
   const dot = document.createElement('div');
   dot.className = `dot${i === 0 ? ' active' : ''}`;
+  dot.setAttribute('role', 'button');
+  dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+  if (i === 0) dot.setAttribute('aria-current', 'true');
   dot.addEventListener('click', () => goToSlide(i));
   dotsContainer.appendChild(dot);
 }
@@ -61,6 +64,11 @@ function goToSlide(index) {
   track.style.transform = `translateX(-${currentSlide * 100}%)`;
   dotsContainer.querySelectorAll('.dot').forEach((dot, i) => {
     dot.classList.toggle('active', i === currentSlide);
+    if (i === currentSlide) {
+      dot.setAttribute('aria-current', 'true');
+    } else {
+      dot.removeAttribute('aria-current');
+    }
   });
   resetAutoplay();
 }
